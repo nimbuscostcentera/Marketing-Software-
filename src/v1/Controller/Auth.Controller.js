@@ -5,9 +5,9 @@ class AuthController {
     try {
       const AuthResponse = await LoginService.getlogin(req, res, next);
       return AuthResponse;
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ errMsg: "error", response: err });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ errMsg: "error", response: error });
     }
   }
 
