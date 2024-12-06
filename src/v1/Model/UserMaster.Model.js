@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const Pwd = bcrypt.genSaltSync(10);
 const { sequelize, DataTypes } = require("sequelize");
+const { country_masters } = require("./CountryMaster.Model");
 // console.log(Pwd);
 const date = new Date();
 const UserMasters = sq.define("usermasters", {
@@ -16,10 +17,10 @@ const UserMasters = sq.define("usermasters", {
   CompanyCode: {
     type: DataTypes.STRING,
     allowNull: false,
-    references: {
-      model: "companymasters",
-      key: "CompanyCode",
-    },
+    // references: {
+    //   model: "companymasters",
+    //   key: "CompanyCode",
+    // },
   },
   LoginCode: { // as phone number unique 
     type: DataTypes.BIGINT,
@@ -53,16 +54,21 @@ const UserMasters = sq.define("usermasters", {
   Active: {
     type: DataTypes.TINYINT,
   },
-
-  ZoneId: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    references: {
-      model: "zone_masters",
-      key: "ID",
-    },
+  ID_Country:{
+    type:DataTypes.BIGINT,
+    allowNull:false,
+    references:{
+         model:"country_masters",
+         key:"ID"
+    }
   },
 });
+
+UserMasters.belongsTo(country_masters,{
+  foreignKey:"ID_Country",
+  targetKey:"ID",
+  as:"urc"
+})
 
 sq.sync().then(() => {
   console.log("Table created successfully!");

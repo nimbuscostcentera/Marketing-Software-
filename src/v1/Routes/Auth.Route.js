@@ -73,6 +73,7 @@ const uploadCustomer = multer({
 
 console.log("3");
 router.post("/login", AuthController.securelogin);
+router.post("/companyreg", AuthController.companyReg);
 router.post("/area-add", AuthController.areaadd);
 router.post("/city-add", AuthController.cityadd);
 router.post("/vendor-add", AuthController.vendoradd);

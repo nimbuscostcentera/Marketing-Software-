@@ -21,6 +21,17 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
+
+  async companyReg(req, res, next) {
+    try {
+      const AuthResponse = await LoginService.registration(req, res, next);
+      return AuthResponse;
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ errMsg: "error", response: error });
+    }
+  }
+  
   async UserEdit(req, res, next) {
     console.log("ok");
     try {

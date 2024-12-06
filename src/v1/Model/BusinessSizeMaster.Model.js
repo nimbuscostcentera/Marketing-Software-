@@ -22,7 +22,7 @@ async function createbusiness(){
         // await business_Master.bulkCreate(businessSize)
         console.log("business size created")
     } catch (error) {
-        console.log("error in creating business size",err)
+        console.log("error in creating business size",error)
     }
 }
 createbusiness()

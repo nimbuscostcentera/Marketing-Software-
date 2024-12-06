@@ -1,6 +1,5 @@
 const { sq } = require("../../DataBase/ormdb");
 const { DataTypes } = require("sequelize");
-const  {state_masters}  = require("./state_masters.Model");
 
 // Define the AccountMaster model
 const country_masters = sq.define("country_masters", {
