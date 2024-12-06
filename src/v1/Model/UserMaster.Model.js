@@ -21,9 +21,10 @@ const UserMasters = sq.define("usermasters", {
       key: "CompanyCode",
     },
   },
-  LoginCode: {
+  LoginCode: { // as phone number unique 
     type: DataTypes.BIGINT,
     allowNull: false,
+    unique: true
   },
   Name: {
     type: DataTypes.STRING,
@@ -37,18 +38,12 @@ const UserMasters = sq.define("usermasters", {
   Email: {
     type: DataTypes.STRING,
   },
-  PhoneNumber: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-  },
+
   Password: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  Pass: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
+
   Utype: {
     type: DataTypes.BIGINT,
   },
@@ -58,9 +53,7 @@ const UserMasters = sq.define("usermasters", {
   Active: {
     type: DataTypes.TINYINT,
   },
-  EndDate: {
-    type: DataTypes.DATEONLY,
-  },
+
   ZoneId: {
     type: DataTypes.BIGINT,
     allowNull: false,
