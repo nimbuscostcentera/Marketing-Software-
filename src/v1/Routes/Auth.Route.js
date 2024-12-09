@@ -8,6 +8,7 @@ const fs = require("fs");
 require("dotenv").config();
 var baseurl = "D:NimbusEstimate\backendImages";
 const dotenv = require("dotenv");
+const {tokenVerify}= require("../utils/index")
 
 // Specify the path to your .env file
 
@@ -72,6 +73,7 @@ const uploadCustomer = multer({
 //--------------------------------------------------------------------------------------
 
 console.log("3");
+router.post("/token-generate",tokenVerify.GenerateToken)
 router.post("/login", AuthController.securelogin);
 router.post("/companyreg", AuthController.companyReg);
 router.post("/area-add", AuthController.areaadd);
