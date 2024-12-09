@@ -3,13 +3,13 @@ const { UserMasters } = require("../Model/UserMaster.Model");
 const { QueryTypes, UUIDV4 } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
-const SecreateKey = "kl@#$^&%$@%!$#qwhepiu`ypidunsxjibsxjg63244543654654qww";
+// const SecreateKey = "kl@#$^&%$@%!$#qwhepiu`ypidunsxjibsxjg63244543654654qww";
 const http = require("http");
 const crypto = require("crypto");
 const { v4: uuidv4 } = require("uuid");
 const { CompanyMasters } = require("../Model/CompanyMaster.Model");
 const { country_masters } = require("../Model/CountryMaster.Model");
-const { log } = require("console");
+// const { log } = require("console");
 const Pwd = bcrypt.genSaltSync(10);
 class LoginService {
   async getlogin(req, res, next) {
@@ -52,12 +52,20 @@ class LoginService {
       }
   
       // If the user is valid and active, generate the JWT tokens
-      const accessToken = JWT.sign({ suid: result[0].UUid }, SecreateKey, {
-        expiresIn: "1h",
-      });
-      const refreshToken = JWT.sign({ suid: result[0].UUid }, SecreateKey, {
-        expiresIn: "1d",
-      });
+      const accessToken = JWT.sign(
+        { suid: result[0].UUid },
+        process.env.SECRET,
+        {
+          expiresIn: "2m",
+        }
+      );
+      const refreshToken = JWT.sign(
+        { suid: result[0].UUid },
+        process.env.SECRET,
+        {
+          expiresIn: "1d",
+        }
+      );
   
       // Combine the user data and tokens
       const userWithTokens = { ...result[0], AccessToken: accessToken,refreshToken };

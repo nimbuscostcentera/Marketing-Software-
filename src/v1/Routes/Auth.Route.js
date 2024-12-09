@@ -76,6 +76,7 @@ console.log("3");
 router.post("/token-generate",utils.GenerateToken)
 router.post("/login", AuthController.securelogin);
 router.post("/companyreg",utils.verifyToken, AuthController.companyReg);
+router.post("/company-list", utils.verifyToken, AuthController.companylist);
 router.post("/area-add",utils.verifyToken, AuthController.areaadd);
 router.post("/city-add",utils.verifyToken, AuthController.cityadd);
 router.post("/vendor-add",utils.verifyToken, AuthController.vendoradd);
