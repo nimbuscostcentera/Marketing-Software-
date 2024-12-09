@@ -8,7 +8,7 @@ const fs = require("fs");
 require("dotenv").config();
 var baseurl = "D:NimbusEstimate\backendImages";
 const dotenv = require("dotenv");
-const {tokenVerify}= require("../utils/index")
+const utils= require("../utils/index")
 
 // Specify the path to your .env file
 
@@ -73,27 +73,27 @@ const uploadCustomer = multer({
 //--------------------------------------------------------------------------------------
 
 console.log("3");
-router.post("/token-generate",tokenVerify.GenerateToken)
+router.post("/token-generate",utils.GenerateToken)
 router.post("/login", AuthController.securelogin);
-router.post("/companyreg", AuthController.companyReg);
-router.post("/area-add", AuthController.areaadd);
-router.post("/city-add", AuthController.cityadd);
-router.post("/vendor-add", AuthController.vendoradd);
-router.post("/state-add", AuthController.stateadd);
-router.post("/country-add", AuthController.countryadd);
-router.post("/zone-add", AuthController.zoneadd);
-router.post("/area-list", AuthController.arealist);
-router.post("/salesman-list", AuthController.salesmanlist);
-router.post("/city-list", AuthController.citylist);
+router.post("/companyreg",utils.verifyToken, AuthController.companyReg);
+router.post("/area-add",utils.verifyToken, AuthController.areaadd);
+router.post("/city-add",utils.verifyToken, AuthController.cityadd);
+router.post("/vendor-add",utils.verifyToken, AuthController.vendoradd);
+router.post("/state-add", utils.verifyToken,AuthController.stateadd);
+router.post("/country-add", utils.verifyToken,AuthController.countryadd);
+router.post("/zone-add", utils.verifyToken,AuthController.zoneadd);
+router.post("/area-list", utils.verifyToken,AuthController.arealist);
+router.post("/salesman-list",utils.verifyToken, AuthController.salesmanlist);
+router.post("/city-list",utils.verifyToken, AuthController.citylist);
 // router.post("/vendor-list", AuthController.vendorlist);
-router.post("/industry-list", AuthController.industrylist);
+router.post("/industry-list",utils.verifyToken, AuthController.industrylist);
 router.post("/state-list", AuthController.statelist);
 router.post("/customer-add", AuthController.customeradd);
-router.post("/customer-list", AuthController.customerlist);
-router.post("/zone-list", AuthController.zonelist);
-router.post("/country-list", AuthController.countrylist);
-router.post("/admin", AuthController.adminPanel);
-router.post("/industry-add", AuthController.industryadd);
+router.post("/customer-list", utils.verifyToken,AuthController.customerlist);
+router.post("/zone-list", utils.verifyToken,AuthController.zonelist);
+router.post("/country-list", utils.verifyToken,AuthController.countrylist);
+router.post("/admin",utils.verifyToken, AuthController.adminPanel);
+router.post("/industry-add",utils.verifyToken, AuthController.industryadd);
 //By tarashis
 router.route("/getmonthlist").get(AuthController.monthlist);
 router.route("/getbusinesslist").get(AuthController.businessList);

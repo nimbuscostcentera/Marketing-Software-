@@ -1,10 +1,10 @@
 const { sq } = require("../../DataBase/ormdb");
 const { QueryTypes } = require("sequelize");
-const { SuperUserMasters } = require("../Model/SuperUserMaster.Model");
+// const { SuperUserMasters } = require("../Model/SuperUserMaster.Model");
 const { UserMasters } = require("../Model/UserMaster.Model");
-const { UserPermissions } = require("../Model/UserPermission.Model");
-const { UserDefault } = require("../Model/UserDefault.Model");
-const { PageMasters } = require("../Model/PageMaster.Model");
+// const { UserPermissions } = require("../Model/UserPermission.Model");
+// const { UserDefault } = require("../Model/UserDefault.Model");
+// const { PageMasters } = require("../Model/PageMaster.Model");
 const JWT = require("jsonwebtoken");
 const { response } = require("express");
 const SecreateKey = "kl@#$^&%$@%!$#qwhepiu`ypidunsxjibsxjg63244543654654qww";
