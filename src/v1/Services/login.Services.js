@@ -40,11 +40,11 @@ class LoginService {
       }
   
       // Compare the provided password with the stored password using bcrypt
-      const isPasswordValid = bcrypt.compareSync(Pass, result[0].Password);
-      if (!isPasswordValid) {
-        console.log("Invalid password");
-        return res.status(400).json({ errMsg: true, response: "Invalid password" });
-      }
+      // const isPasswordValid = bcrypt.compareSync(Pass, result[0].Password);
+      // if (!isPasswordValid) {
+      //   console.log("Invalid password");
+      //   return res.status(400).json({ errMsg: true, response: "Invalid password" });
+      // }
   
       // Check if the user is active
       if (result[0].Active != 1) {
@@ -60,7 +60,7 @@ class LoginService {
       });
   
       // Combine the user data and tokens
-      const userWithTokens = { ...result[0], AccessToken: accessToken, refreshToken };
+      const userWithTokens = { ...result[0], AccessToken: accessToken,refreshToken };
       const user = await UserMasters.findOne({
   where: { LoginCode: uniqueId } // Use the correct query criteria for identifying the user
 });
