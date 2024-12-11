@@ -14,7 +14,7 @@ const { QueryTypes } = require("sequelize");
 const { Industry_Masters } = require("../Model/Industry_Masters.Model");
 const { business_Master } = require("../Model/BusinessSizeMaster.Model");
 const { customer_masters } = require("../Model/CustomerMaster.Model");
-const moment = require('moment')
+const moment = require("moment");
 const {
   Feedback_Transactions,
 } = require("../Model/Feedback_Transaction.Model");
@@ -24,6 +24,7 @@ const { month_Master } = require("../Model/MonthMaster.Model");
 class Dataservice {
   async AreaList(req, res, next) {
     const { CompanyCode, ReportType, Date, zone_id } = req.body;
+   
     let zoneObj = { CompanyCode: CompanyCode };
     if (zone_id !== undefined && zone_id !== null && zone_id !== "") {
       zoneObj.Zone_ID = zone_id;
@@ -85,23 +86,7 @@ class Dataservice {
       });
     return db6;
   }
-  // async VendorList(req, res, next) {
-  //   try {
-  //     const { CompanyCode, ReportType, Date } = req.body;
 
-  //     await Vendor_Masters.findAll().then(async (Result) => {
-  //       if (Result.length != 0) {
-  //         return res.status(200).json({ errMsg: false, response: Result });
-  //       } else {
-  //         return res.status(400).json({ errMsg: false, response: Result });
-  //       }
-  //     });
-
-  //     // const users =  AgentMasters.findAll();
-  //   } catch (error) {
-  //     return res.status(500).json({ status: "FAILED", data: error });
-  //   }
-  // }
   async IndustryList(req, res, next) {
     try {
       const { CompanyCode, ReportType, Date } = req.body;
@@ -219,30 +204,7 @@ class Dataservice {
       return res.status(500).json({ status: "FAILED", data: error });
     }
   }
-  // async AdminPanel(req, res, next) {
-  //   try {
-  //     const { CompanyCode, StartDate, EndDate } = req.body;
-  //     let sql = `Select * from customer_masters as cm inner join feedback_transactions as ft
-  //   on cm.ID = ft.Id_Name inner join area_masters as am on am.ID=cm.id_area inner join city_masters as cim on
-  //   cim.ID=cm.id_city inner join state_masters as sm on sm.ID=cm.id_state inner join country_masters as con
-  //   on con.ID=cm.COUNTRY`;
-  //     sq.sync();
-  //     const dnconn = await sq
-  //       .query(sql, {
-  //         type: QueryTypes.SELECT,
-  //       })
-  //       .then(async (resp) => {
-  //         console.log(resp, "hl");
-  //         return res.status(200).json({ response: resp });
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //     return dnconn;
-  //   } catch (error) {
-  //     return res.status(500).json({ status: "FAILED", data: error });
-  //   }
-  // }
+
   async AdminPanel(req, res, next) {
     const { CompanyCode, StartDate, EndDate, today, fbtype, Area } = req.body;
 
@@ -332,12 +294,11 @@ class Dataservice {
               ],
             },
             {
-          
-                model: FBType_Masters,
-                as: "ftm",
-                attributes:[],
-              required: true
-            }
+              model: FBType_Masters,
+              as: "ftm",
+              attributes: [],
+              required: true,
+            },
           ],
           where: { ...obj },
           attributes: [
@@ -378,25 +339,22 @@ class Dataservice {
   }
   async CustomerList(req, res, next) {
     try {
-      const { CompanyCode, Date } = req.body;
-      let sql = "";
-      //sql ="SELECT Cm.*, Am.Code, Sm.State_name,City.NAME AS City_Name, Vm1.NAME AS Vendor_Name, Vm2.NAME AS Vendor1_Name FROM customer_masters AS Cm JOIN area_masters AS Am ON Cm.id_area = Am.id JOIN state_masters AS Sm ON Cm.id_state = Sm.id JOIN city_masters AS City ON Cm.id_city = City.id JOIN vendor_masters AS Vm1 ON Cm.ID_Vendor = Vm1.id JOIN vendor_masters AS Vm2 ON Cm.ID_Vendor1 = Vm2.id and Cm.CompanyCode=:CompanyCode	";
-      sql = "SELECT * FROM customer_masters";
-      let resDB = sq
-        .query(sql, {
-          replacements: { CompanyCode: CompanyCode },
-          type: QueryTypes.SELECT,
-        })
-        .then(async (Result) => {
-          if (Result?.length !== 0) {
-            return res.status(200).json({ errMsg: false, response: Result });
-          } else {
-            return res.status(400).json({ errMsg: false, response: [] });
-          }
-        });
-      return resDB;
-      // const users =  AgentMasters.findAll();
+      const { CompanyCode, User_Type } = req.body;
+       let obj = {};
+      console.log(req.body, "In customer List");
+      if (User_Type != 1) {
+        obj = {
+          where: {
+            CompanyCode: CompanyCode,
+          },
+        };
+      }
+// console.log(obj);
+      let Result = await customer_masters.findAll(obj);
+
+      return res.status(200).json({ errMsg: false, response: Result });
     } catch (error) {
+      console.log(error);
       return res.status(400).json({ status: "FAILED", data: error });
     }
   }
@@ -422,9 +380,20 @@ class Dataservice {
   }
   async CompanyList(req, res, next) {
     try {
-      const { CompanyCode, ReportType, Date } = req.body;
+      const { CountryCode, User_Type } = req.body;
+      let obj = {};
+      console.log(req.body,"In company List");
 
-      await CompanyMasters.findAll().then(async (Result) => {
+      const country = await country_masters.findOne({
+        where: { ID: CountryCode },
+      });
+      console.log(country);
+      const countryName = country?.Country_name;
+      if (User_Type != 1) {
+        obj = { where: { Country: countryName } };
+      }
+
+      await CompanyMasters.findAll(obj).then(async (Result) => {
         if (Result.length != 0) {
           return res.status(200).json({ errMsg: false, response: Result });
         } else {
@@ -434,7 +403,8 @@ class Dataservice {
 
       // const users =  AgentMasters.findAll();
     } catch (error) {
-      return res.status(500).json({ status: "FAILED", data: error });
+      console.log(error);
+      return res.status(400).json({ status: "FAILED", data: error });
     }
   }
   async zonelist(req, res, next) {
@@ -467,6 +437,17 @@ class Dataservice {
   async CountryList(req, res, next) {
     try {
       const { ReportType, Date } = req.body;
+      const countryName = req.country;
+      console.log("inside country list", countryName);
+
+      if (countryName) {
+        const countryDetails = await country_masters.findAll({
+          where: { country_name: countryName },
+        });
+        return res
+          .status(200)
+          .json({ errMsg: false, response: countryDetails });
+      }
 
       await country_masters.findAll().then(async (Result) => {
         if (Result.length != 0) {

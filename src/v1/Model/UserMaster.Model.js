@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const Pwd = bcrypt.genSaltSync(10);
 const { sequelize, DataTypes } = require("sequelize");
 const { country_masters } = require("./CountryMaster.Model");
+const { User_Type_Masters } = require("./UserType.Model");
 // console.log(Pwd);
 const date = new Date();
 const UserMasters = sq.define("usermasters", {
@@ -22,10 +23,11 @@ const UserMasters = sq.define("usermasters", {
     //   key: "CompanyCode",
     // },
   },
-  LoginCode: { // as phone number unique 
+  LoginCode: {
+    // as phone number unique
     type: DataTypes.BIGINT,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   Name: {
     type: DataTypes.STRING,
@@ -47,6 +49,11 @@ const UserMasters = sq.define("usermasters", {
 
   Utype: {
     type: DataTypes.BIGINT,
+    allowNull: false,
+    references: {
+      model: "User_Type_Masters",
+      key: "ID",
+    },
   },
   LogOut: {
     type: DataTypes.TINYINT,
@@ -54,13 +61,13 @@ const UserMasters = sq.define("usermasters", {
   Active: {
     type: DataTypes.TINYINT,
   },
-  ID_Country:{
-    type:DataTypes.BIGINT,
-    allowNull:false,
-    references:{
-         model:"country_masters",
-         key:"ID"
-    }
+  ID_Country: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+    references: {
+      model: "country_masters",
+      key: "ID",
+    },
   },
 });
 
@@ -69,6 +76,12 @@ UserMasters.belongsTo(country_masters,{
   targetKey:"ID",
   as:"urc"
 })
+
+UserMasters.belongsTo(User_Type_Masters, {
+  foreignKey: "Utype",
+  targetKey: "ID",
+  as: "user_type_details",
+});
 
 sq.sync().then(() => {
   console.log("Table created successfully!");
