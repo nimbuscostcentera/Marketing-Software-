@@ -11,67 +11,77 @@ const { response } = require("express");
 
 const Pwd = bcrypt.genSaltSync(10);
 class TransService {
-  async FeedbackTrans(req, res, next) {
-    console.log(req.body, "request agent reg");
+ async  FeedbackTrans(req, res, next) {
+  // console.log(req.body, "Received feedback request");
 
-    let flag = 0;
-    let msg = "";
+  try {
+    // Extracting data from request body
+    const {
+      Id_Name: ID_Customer, // Alias for clarity
+      Custstatus,
+      Actiondate,
+      CompanyCode,
+      remarks,
+      ID_USER,
+    } = req.body;
+    console.log(req.body)
+    // console.log(CompanyCode);
+    // Generate current date for Voudate
+    const Voudate = moment().format("YYYY-MM-DD");
+    const TRANCODE = "FST"; // Transaction code
 
-    try {
-      const Voudate = moment().format("YYYY-MM-DD");
-      const ID_Customer = req.body.Id_Name;
-      const Custstatus = req.body.Custstatus;
-      const Actiondate = req.body.Actiondate;
-      const CompanyCode = req.body.CompanyCode;
-      const remarks = req.body.remarks;
-      const ID_USER = req.body.ID_USER;
-      const TRANCODE = "FST";
-      await sq.sync();
+    // Ensure database schema is synced
+    await sq.sync();
 
-      const lastsrl = await serial_infos.findOne({
-        attributes: ["LASTSERIAL"],
-        where: { TRANCODE: TRANCODE, CompanyCode: CompanyCode },
+    // Retrieve the last serial number for the transaction code and company
+    const lastSerial = await serial_infos.findOne({
+      attributes: ["LASTSERIAL"],
+      where: { TRANCODE, CompanyCode },
+    });
+
+    if (!lastSerial) {
+      return res.status(404).json({
+        errMsg: true,
+        response: "Transaction code or company code not found.",
       });
-
-      const srl = lastsrl.dataValues.LASTSERIAL + 1;
-      const VOUNO = `${TRANCODE}${srl}`;
-
-      await Feedback_Transactions.create({
-        Vounum: VOUNO,
-        Voudate: Voudate,
-        ID_Customer: ID_Customer,
-        Cust_Status: Custstatus,
-        Actiondate: Actiondate,
-        remarks: remarks,
-        ID_USER: ID_USER,
-        CompanyCode: CompanyCode,
-      })
-        .then(async (RegRes) => {
-          await serial_infos.update(
-            { LASTSERIAL: srl },
-            {
-              where: { TRANCODE: TRANCODE },
-            }
-          );
-          return res.status(200).json({
-            errMsg: false,
-            response: "FeedBack Added Successfully",
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          return res.status(500).json({
-            errMsg: false,
-            Response: "FeedBack Add failed." + err,
-          });
-        });
-    } catch (error) {
-      console.error(error);
-      return res
-        .status(500)
-        .json({ response: "Server error: " + error.message });
     }
+
+    const srl = lastSerial.LASTSERIAL + 1;
+    const VOUNO = `${TRANCODE}${srl}`; // Generate unique voucher number
+
+    // Insert feedback transaction record
+    const feedback = await Feedback_Transactions.create({
+      Vounum: VOUNO,
+      Voudate,
+      ID_Customer,
+      Cust_Status: Custstatus,
+      Actiondate,
+      Remarks: remarks,
+      ID_USER,
+      CompanyCode: CompanyCode,
+    });
+console.log(feedback);
+console.log(feedback.CompanyCode);
+    // Update last serial number
+    await serial_infos.update(
+      { LASTSERIAL: srl },
+      { where: { TRANCODE } }
+    );
+
+    // Return success response
+    return res.status(200).json({
+      errMsg: false,
+      response: "Feedback added successfully",
+      data: feedback,
+    });
+  } catch (error) {
+    console.error("Feedback transaction error:", error.message);
+    return res.status(500).json({
+      errMsg: true,
+      response: `Server error: ${error.message}`,
+    });
   }
+}
 
   async FeedbackList(req, res, next) {
     console.log(req.body, "request agent reg");

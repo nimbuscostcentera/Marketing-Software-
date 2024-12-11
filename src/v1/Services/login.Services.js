@@ -9,6 +9,7 @@ const crypto = require("crypto");
 const { v4: uuidv4 } = require("uuid");
 const { CompanyMasters } = require("../Model/CompanyMaster.Model");
 const { country_masters } = require("../Model/CountryMaster.Model");
+const { User_Type_Masters } = require("../Model/UserType.Model");
 // const { log } = require("console");
 const Pwd = bcrypt.genSaltSync(10);
 class LoginService {
@@ -77,13 +78,19 @@ if (user) {
   await user.update({ LogOut: 0 });
 } 
       console.log(userWithTokens, "User successfully logged in");
-  
+
+
+      const user_types = await User_Type_Masters.findOne({
+        where: { ID: user.Utype },
+      });
+  console.log(user_types)
       // Return the success response with the user details and tokens
       return res.status(200).json({
         errMsg: false,
         response: {
           msg: "User successfully logged in",
           details: userWithTokens,
+          permission_check : user_types
         },
       });
   
@@ -316,8 +323,12 @@ if (user) {
           !PANNo || !Country || !state || !Email || !Utype || !pass) {
           return res.status(400).json({ message: "Missing required fields" });
       }
-
-      const isExist = await CompanyMasters.findOne({
+      const user = req.user;
+      console.log(user);
+      if(user.Utype != 1){
+        return res.status(400).json({ message: "Unauthorized Request!!" });
+      }
+      const isExist = await CompanyMasters.findOne({ 
         where: { ContactNumber: ContactNumber }
       });
       if (isExist) {

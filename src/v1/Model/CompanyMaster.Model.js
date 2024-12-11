@@ -39,10 +39,6 @@ const CompanyMasters = sq.define("companymasters", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  state: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   Status: {
     type: DataTypes.BOOLEAN,
     allowNull:false

@@ -29,6 +29,11 @@ class Masterservice {
         half,
         full,
       } = req.body;
+         const user = req.user;
+         console.log(user);
+         if (user.Utype != 1) {
+           return res.status(400).json({ response: "Unauthorized Request!!" });
+         }
 
       const tcode = "EST";
       const lastsrl = await Area_Masters.findAll({
@@ -76,6 +81,11 @@ class Masterservice {
 
     try {
       const { NAME, id_state } = req.body;
+         const user = req.user;
+         console.log(user);
+         if (user.Utype != 1) {
+           return res.status(400).json({ response: "Unauthorized Request!!" });
+         }
 
       const lastsrl = await city_masters.findAll({
         where: { NAME: NAME },
@@ -118,6 +128,11 @@ class Masterservice {
 
     try {
       const { Country } = req.body;
+         const user = req.user;
+          console.log(user, "User fetch from req.user");
+         if (user.Utype != 1) {
+           return res.status(400).json({ response: "Unauthorized Request!!" });
+         }
 
       const lastsrl = await country_masters.findAll({
         where: { Country_name: Country },
@@ -159,6 +174,11 @@ class Masterservice {
 
     try {
       const { NAME, Parent_zone, id_city } = req.body;
+        const user = req.user;
+        console.log(user);
+        if (user.Utype != 1) {
+          return res.status(400).json({ response: "Unauthorized Request!!" });
+        }
 
       const lastsrl = await zone_masters.findAll({
         where: { NAME: NAME },
@@ -238,6 +258,11 @@ class Masterservice {
 
     try {
       const { State_name, id_country } = req.body;
+         const user = req.user;
+         console.log(user);
+         if (user.Utype != 1) {
+           return res.status(400).json({ response: "Unauthorized Request!!" });
+         }
 
       const lastsrl = await state_masters.findAll({
         where: { State_name: State_name },
@@ -349,6 +374,11 @@ class Masterservice {
 
     try {
       const { type } = req.body;
+        const user = req.user;
+        console.log(user);
+        if (user.Utype != 1) {
+          return res.status(400).json({ response: "Unauthorized Request!!" });
+        }
 
       await FBType_Masters.create({
         type_name: type,
@@ -402,6 +432,11 @@ class Masterservice {
 
     try {
       const { custType } = req.body;
+       const user = req.user;
+       console.log(user);
+       if (user.Utype != 1) {
+         return res.status(400).json({ response: "Unauthorized Request!!" });
+       }
 
       await CustomerType_Master.create({
         type: custType,
@@ -427,6 +462,11 @@ class Masterservice {
 
     try {
       const { NAME } = req.body;
+       const user = req.user;
+       console.log(user, "User fetch from req.user");
+       if (user.Utype != 1) {
+         return res.status(400).json({ response: "Unauthorized Request!!" });
+       }
       const lastsrl = await Industry_Masters.findAll({
         where: { NAME: NAME },
       });
