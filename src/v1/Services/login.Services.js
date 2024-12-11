@@ -355,7 +355,6 @@ if (user) {
             GSTIN: GSTIN,
             PANNo: PANNo,
             Country: Country,
-            state: state,
             Status: 1,
             UUID: uuidv4(),
             LoginCode:1
