@@ -318,9 +318,9 @@ if (user) {
   }
   async registration(req, res, next) {
     try {
-        const {CompanyCode,companyName,Address,ContactNumber,GSTIN,PANNo,Country,state,Email,Utype,pass,Name}=req.body
+        const {CompanyCode,companyName,Address,ContactNumber,GSTIN,PANNo,Country,Email,Utype,pass,Name}=req.body
         if (!CompanyCode  || !companyName || !Address || !ContactNumber || !GSTIN ||
-          !PANNo || !Country || !state || !Email || !Utype || !pass) {
+          !PANNo || !Country  || !Email || !Utype || !pass) {
           return res.status(400).json({ message: "Missing required fields" });
       }
       const user = req.user;
