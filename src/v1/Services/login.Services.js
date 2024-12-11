@@ -354,10 +354,10 @@ if (user) {
             ContactNumber: ContactNumber,
             GSTIN: GSTIN,
             PANNo: PANNo,
-            Country: Country,
+            Country: countryExist.Country_name,
             Status: 1,
             UUID: uuidv4(),
-            LoginCode:1
+            LoginCode: ContactNumber,
           });
           
 
