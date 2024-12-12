@@ -99,7 +99,7 @@ router.post("/salesman-list", utils.verifyToken, AuthController.salesmanlist);
 router.post("/city-list", utils.verifyToken, AuthController.citylist);
 // router.post("/vendor-list", AuthController.vendorlist);
 router.post("/industry-list", utils.verifyToken, AuthController.industrylist);
-router.post("/state-list", AuthController.statelist);
+router.post("/state-list",utils.verifyToken, AuthController.statelist);
 router.post("/customer-add", AuthController.customeradd);
 router.post("/customer-list", utils.verifyToken, AuthController.customerlist);
 router.post("/zone-list", utils.verifyToken, AuthController.zonelist);
@@ -107,22 +107,27 @@ router.post("/zone-list", utils.verifyToken, AuthController.zonelist);
 router.post("/admin", utils.verifyToken, AuthController.adminPanel);
 router.post("/industry-add", utils.verifyToken, AuthController.industryadd);
 //By tarashis
-router.route("/getmonthlist").get(AuthController.monthlist);
-router.route("/getbusinesslist").get(AuthController.businessList);
-router.route("/year").post(AuthController.yearAdd).get(AuthController.yearList);
+router.route("/getmonthlist").get(utils.verifyToken,AuthController.monthlist);
+router
+  .route("/getbusinesslist")
+  .get(utils.verifyToken,AuthController.businessList);
+router
+  .route("/year")
+  .post(utils.verifyToken, AuthController.yearAdd)
+  .get(utils.verifyToken,AuthController.yearList);
 router
   .route("/customer-type")
-  .post(AuthController.custTypeAdd)
-  .get(AuthController.custList);
+  .post(utils.verifyToken, AuthController.custTypeAdd)
+  .get(utils.verifyToken,AuthController.custList);
 router
   .route("/fbtype")
-  .post(AuthController.fbtypeadd)
-  .get(AuthController.fbtypelist);
-router.route("/weekdays").get(AuthController.weekdayslist);
+  .post(utils.verifyToken, AuthController.fbtypeadd)
+  .get(utils.verifyToken,AuthController.fbtypelist);
+router.route("/weekdays").get(utils.verifyToken,AuthController.weekdayslist);
 //  router.post("/token-generate",PermissonCheck.GenerateToken);
 router.post("/user-registration", AuthController.UserRegistration);
 
-router.post("/user-edit", AuthController.UserEdit);
+router.post("/user-edit", utils.verifyToken,AuthController.UserEdit);
 
 // router.post("/forget-password", Logger.Logreq,AuthController.forgetpass,Logger.Logres);
 // router.post("/reset-password",Logger.Logreq , AuthController.resetpass,Logger.Logres);
