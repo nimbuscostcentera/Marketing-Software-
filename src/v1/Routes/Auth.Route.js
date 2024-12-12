@@ -104,6 +104,9 @@ router.post("/customer-add", AuthController.customeradd);
 router.post("/customer-list", utils.verifyToken, AuthController.customerlist);
 router.post("/zone-list", utils.verifyToken, AuthController.zonelist);
 
+// get usertype details
+router.get("/usertype-list", utils.verifyToken, AuthController.UserListType);
+
 router.post("/admin", utils.verifyToken, AuthController.adminPanel);
 router.post("/industry-add", utils.verifyToken, AuthController.industryadd);
 //By tarashis

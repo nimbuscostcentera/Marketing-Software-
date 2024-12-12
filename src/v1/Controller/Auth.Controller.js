@@ -172,6 +172,15 @@ class AuthController {
     }
   }
 
+  async UserListType(req,res,next){
+    try {
+      await Dataservice.UserTypeList(req,res,next)
+      next()
+    } catch (error) {
+      return res.status(500).json({ errMsg: "error", response: err });
+    }
+  }
+
   async customerlist(req, res, next) {
     console.log("ok");
     try {

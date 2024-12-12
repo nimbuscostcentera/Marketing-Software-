@@ -1,4 +1,5 @@
 const { sq } = require("../../DataBase/ormdb");
+const { User_Type_Masters }=require("../Model/UserType.Model")
 const { Area_Masters } = require("../Model/AreaMaster.Model");
 const { Vendor_Masters } = require("../Model/Vendor_Master.Model");
 const { city_masters } = require("../Model/city_masters.Model");
@@ -555,6 +556,24 @@ class Dataservice {
       return res.status(500).json({ status: "failed", response: error });
     }
   }
+
+  async UserTypeList(req,res,next){
+    try {
+      const result=await User_Type_Masters.findAll({
+        attributes:["ID","description"]
+      });
+     
+      if(result !=0){
+        return res.status(200).json({ errMsg: false, response: result });
+      }else{
+        return res.status(400).json({ errMsg: false, response: result });
+      }
+    } catch (error) {
+      return res.status(500).json({ status: "failed", response: error });
+    }
+  }
 }
+
+
 
 module.exports = new Dataservice();
