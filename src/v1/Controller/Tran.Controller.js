@@ -1,7 +1,6 @@
 
 const { Transservice } = require("../Services");
 class TarnController {
-
   async feedbacktrans(req, res, next) {
     console.log("ok");
     try {
@@ -12,7 +11,6 @@ class TarnController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async feedbacklist(req, res, next) {
     console.log("ok");
     try {
@@ -23,7 +21,6 @@ class TarnController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async trackadd(req, res, next) {
     console.log("ok");
     try {
