@@ -116,7 +116,7 @@ class Permission {
     try {
       const RefreshToken = req.header("RefreshToken");
       const AccessToken = req.header("Authorization");
-      console.log(AccessToken, RefreshToken, "my access token in verify token");
+    //  console.log(AccessToken, RefreshToken, "my access token in verify token");
 
       // Check if AccessToken is provided
       if (!AccessToken) {
@@ -124,7 +124,7 @@ class Permission {
       }
 
       // Verify the AccessToken
-      const decoded = await JWT.verify(
+      const decoded = JWT.verify(
         AccessToken.split(" ")[1],
         process.env.SECRET
       );

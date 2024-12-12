@@ -10,7 +10,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: error });
     }
   }
-
   async UserRegistration(req, res, next) {
     console.log("ok");
     try {
@@ -21,7 +20,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async companyReg(req, res, next) {
     try {
       const AuthResponse = await LoginService.registration(req, res, next);
@@ -31,7 +29,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: error });
     }
   }
-  
   async UserEdit(req, res, next) {
     console.log("ok");
     try {
@@ -52,7 +49,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async cityadd(req, res, next) {
     console.log("ok");
     try {
@@ -63,7 +59,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async vendoradd(req, res, next) {
     console.log("ok");
     try {
@@ -74,7 +69,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async stateadd(req, res, next) {
     console.log("ok");
     try {
@@ -95,7 +89,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async industrylist(req, res, next) {
     // console.log("ok");
     try {
@@ -106,7 +99,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async customeradd(req, res, next) {
     console.log("ok");
     try {
@@ -117,7 +109,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async countryadd(req, res, next) {
     console.log("ok");
     try {
@@ -128,7 +119,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async zoneadd(req, res, next) {
     console.log("ok");
     try {
@@ -139,7 +129,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async countrylist(req, res, next) {
     console.log("ok");
     try {
@@ -160,7 +149,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async statelist(req, res, next) {
     console.log("ok");
     try {
@@ -171,7 +159,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async UserListType(req,res,next){
     try {
       await Dataservice.UserTypeList(req,res,next)
@@ -180,7 +167,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async customerlist(req, res, next) {
     console.log("ok");
     try {
@@ -191,7 +177,6 @@ class AuthController {
       // return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async salesmanlist(req, res, next) {
     console.log("ok");
     try {
@@ -202,7 +187,15 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
+  async salesmanadd(req, res, next) {
+     try {
+       await Masterservice.SalesManRegistration(req, res, next);
+       next();
+     } catch (err) {
+       console.log(err);
+       return res.status(500).json({ errMsg: "error", response: err });
+     }
+  }
   async companylist(req, res, next) {
     console.log("ok");
     try {
@@ -233,7 +226,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async fbtypeadd(req, res, next) {
     // console.log("ok");
     try {
@@ -282,7 +274,6 @@ class AuthController {
       return res.status(500).json({ errMsg: "error", response: err });
     }
   }
-
   async yearList(req, res, next) {
     try {
       await Dataservice.yearList(req, res, next);

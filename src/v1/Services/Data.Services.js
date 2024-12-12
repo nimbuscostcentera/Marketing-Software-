@@ -1,5 +1,5 @@
 const { sq } = require("../../DataBase/ormdb");
-const { User_Type_Masters }=require("../Model/UserType.Model")
+const { User_Type_Masters } = require("../Model/UserType.Model");
 const { Area_Masters } = require("../Model/AreaMaster.Model");
 const { Vendor_Masters } = require("../Model/Vendor_Master.Model");
 const { city_masters } = require("../Model/city_masters.Model");
@@ -26,9 +26,14 @@ const { State_Details_Master } = require("../Model/state_detailsMaster.Model");
 class Dataservice {
   async AreaList(req, res, next) {
     const { CompanyCode, ReportType, Date, zone_id } = req.body;
-   
+
     let zoneObj = { CompanyCode: CompanyCode };
-    if (zone_id !== undefined && zone_id !== null && zone_id !== "") {
+    if (
+      zone_id !== undefined &&
+      zone_id !== null &&
+      zone_id !== "" &&
+      zone_id != -1
+    ) {
       zoneObj.Zone_ID = zone_id;
     }
     let db6 = await sq
@@ -88,7 +93,6 @@ class Dataservice {
       });
     return db6;
   }
-
   async IndustryList(req, res, next) {
     try {
       const { CompanyCode, ReportType, Date } = req.body;
@@ -160,19 +164,19 @@ class Dataservice {
         warning: false,
         msg: "",
       };
-          if (
-            CountryCode !== undefined &&
-            CountryCode !== null &&
-            CountryCode !== ""
-          ) {
-            data_obj.id_country = parseInt(CountryCode);
-          } else {
-            (message_obj.warning = true),
-              (message_obj.msg = "country code is not defined");
-            // return res
-            //   .status(400)
-            //   .json({ errMsg: false, message: message_obj.msg });
-          }
+      if (
+        CountryCode !== undefined &&
+        CountryCode !== null &&
+        CountryCode !== ""
+      ) {
+        data_obj.id_country = parseInt(CountryCode);
+      } else {
+        (message_obj.warning = true),
+          (message_obj.msg = "country code is not defined");
+        // return res
+        //   .status(400)
+        //   .json({ errMsg: false, message: message_obj.msg });
+      }
       const user = req.user;
       // console.log(user,"User from req.user")
       let Result;
@@ -197,8 +201,7 @@ class Dataservice {
         });
         // console.log(details,"details fetched for utype 3")
       } else {
-      Result =  await state_masters
-        .findAll({
+        Result = await state_masters.findAll({
           where: data_obj,
           include: [
             {
@@ -214,19 +217,15 @@ class Dataservice {
             [sq.col("Country.country_name"), "country"],
           ],
           // raw:true
-        })
+        });
       }
 
-        if (Result.length != 0) {
-            // console.log(Result);
-            return res
-              .status(200)
-              .json({ errMsg: false, response: Result });
-          } else {
-            return res.status(400).json({ errMsg: false, response: Result });
-          }
-  
-    
+      if (Result.length != 0) {
+        // console.log(Result);
+        return res.status(200).json({ errMsg: false, response: Result });
+      } else {
+        return res.status(400).json({ errMsg: false, response: Result });
+      }
 
       // const users =  AgentMasters.findAll();
     } catch (error) {
@@ -234,7 +233,6 @@ class Dataservice {
       return res.status(500).json({ status: "FAILED", data: error });
     }
   }
-
   async AdminPanel(req, res, next) {
     const { CompanyCode, StartDate, EndDate, today, fbtype, Area } = req.body;
 
@@ -370,7 +368,7 @@ class Dataservice {
   async CustomerList(req, res, next) {
     try {
       const { CompanyCode, User_Type } = req.body;
-       let obj = {};
+      let obj = {};
       console.log(req.body, "In customer List");
       if (User_Type != 1) {
         obj = {
@@ -379,7 +377,7 @@ class Dataservice {
           },
         };
       }
-// console.log(obj);
+      // console.log(obj);
       let Result = await customer_masters.findAll(obj);
 
       return res.status(200).json({ errMsg: false, response: Result });
@@ -393,9 +391,9 @@ class Dataservice {
       const { CompanyCode } = req.body;
 
       await SalesManMaster.findAll({
-        // where: {
-        //   CompanyCode: CompanyCode,
-        // },
+        where: {
+          CompanyCode: CompanyCode,
+        },
       }).then(async (Result) => {
         // console.log(Result)
         if (Result.length != 0) {
@@ -412,7 +410,7 @@ class Dataservice {
     try {
       const { CountryCode, User_Type } = req.body;
       let obj = {};
-      console.log(req.body,"In company List");
+      console.log(req.body, "In company List");
 
       const country = await country_masters.findOne({
         where: { ID: CountryCode },
@@ -543,7 +541,6 @@ class Dataservice {
       return res.status(500).json({ status: "FAILED", data: error });
     }
   }
-
   async businessList(req, res, next) {
     try {
       await business_Master.findAll().then(async (result) => {
@@ -557,7 +554,6 @@ class Dataservice {
       return res.status(500).json({ status: "failed", response: error });
     }
   }
-
   async yearList(req, res, next) {
     try {
       await year_Master.findAll().then(async (result) => {
@@ -571,7 +567,6 @@ class Dataservice {
       return res.status(500).json({ status: "failed", response: error });
     }
   }
-
   async customertypeList(req, res, next) {
     try {
       await CustomerType_Master.findAll().then(async (result) => {
@@ -585,16 +580,15 @@ class Dataservice {
       return res.status(500).json({ status: "failed", response: error });
     }
   }
-
-  async UserTypeList(req,res,next){
+  async UserTypeList(req, res, next) {
     try {
-      const result=await User_Type_Masters.findAll({
-        attributes:["ID","description"]
+      const result = await User_Type_Masters.findAll({
+        attributes: ["ID", "description"],
       });
-     
-      if(result !=0){
+
+      if (result != 0) {
         return res.status(200).json({ errMsg: false, response: result });
-      }else{
+      } else {
         return res.status(400).json({ errMsg: false, response: result });
       }
     } catch (error) {
@@ -602,7 +596,5 @@ class Dataservice {
     }
   }
 }
-
-
 
 module.exports = new Dataservice();

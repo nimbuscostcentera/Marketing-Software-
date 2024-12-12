@@ -12,10 +12,12 @@ const { v4: uuidv4 } = require("uuid");
 const { CustomerType_Master } = require("../Model/CustomerTypeMaster.Model");
 const { year_Master } = require("../Model/YearMaster.Model");
 const { Industry_Masters } = require("../Model/Industry_Masters.Model");
+const { SalesManMaster } = require("../Model/SalesManMaster.Model");
+const { UserMasters } = require("../Model/UserMaster.Model");
+const bcrypt = require("bcryptjs");
+const Pwd = bcrypt.genSaltSync(10);
 class Masterservice {
   async Areaadd(req, res, next) {
-    console.log(req.body);
-
     try {
       const {
         CompanyCode,
@@ -29,11 +31,11 @@ class Masterservice {
         half,
         full,
       } = req.body;
-         const user = req.user;
-         console.log(user);
-         if (user.Utype != 1) {
-           return res.status(400).json({ response: "Unauthorized Request!!" });
-         }
+      const user = req.user;
+      console.log(user);
+      if ((user.Utype = 1)) {
+        return res.status(400).json({ response: "Unauthorized Request" });
+      }
 
       const tcode = "EST";
       const lastsrl = await Area_Masters.findAll({
@@ -67,7 +69,7 @@ class Masterservice {
       console.error("Error in Areaadd service:", error);
 
       // Send an error response
-      if (!res.headersSent) {
+      if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
           response: "An error occurred while adding the Area",
@@ -81,11 +83,11 @@ class Masterservice {
 
     try {
       const { NAME, id_state } = req.body;
-         const user = req.user;
-         console.log(user);
-         if (user.Utype != 1) {
-           return res.status(400).json({ response: "Unauthorized Request!!" });
-         }
+      const user = req.user;
+      console.log(user);
+      if ((user.Utype = 1)) {
+        return res.status(400).json({ response: "Unauthorized Request" });
+      }
 
       const lastsrl = await city_masters.findAll({
         where: { NAME: NAME },
@@ -114,7 +116,7 @@ class Masterservice {
       console.error("Error in Cityadd service:", error);
 
       // Send an error response
-      if (!res.headersSent) {
+      if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
           response: "An error occurred while adding the City",
@@ -128,11 +130,11 @@ class Masterservice {
 
     try {
       const { Country } = req.body;
-         const user = req.user;
-          console.log(user, "User fetch from req.user");
-         if (user.Utype != 1) {
-           return res.status(400).json({ response: "Unauthorized Request!!" });
-         }
+      const user = req.user;
+      console.log(user, "User fetch from req.user");
+      if ((user.Utype = 1)) {
+        return res.status(400).json({ response: "Unauthorized Request" });
+      }
 
       const lastsrl = await country_masters.findAll({
         where: { Country_name: Country },
@@ -160,7 +162,7 @@ class Masterservice {
       console.error("Error in Cityadd service:", error);
 
       // Send an error response
-      if (!res.headersSent) {
+      if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
           response: "An error occurred while adding the City",
@@ -174,11 +176,11 @@ class Masterservice {
 
     try {
       const { NAME, Parent_zone, id_city } = req.body;
-        const user = req.user;
-        console.log(user);
-        if (user.Utype != 1) {
-          return res.status(400).json({ response: "Unauthorized Request!!" });
-        }
+      const user = req.user;
+      console.log(user);
+      if ((user.Utype = 1)) {
+        return res.status(400).json({ response: "Unauthorized Request" });
+      }
 
       const lastsrl = await zone_masters.findAll({
         where: { NAME: NAME },
@@ -208,7 +210,7 @@ class Masterservice {
       console.error("Error in Cityadd service:", error);
 
       // Send an error response
-      if (!res.headersSent) {
+      if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
           response: "An error occurred while adding the City",
@@ -244,7 +246,7 @@ class Masterservice {
       console.error("Error in Vendoradd service:", error);
 
       // Send an error response
-      if (!res.headersSent) {
+      if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
           response: "An error occurred while adding the Vendor",
@@ -258,11 +260,11 @@ class Masterservice {
 
     try {
       const { State_name, id_country } = req.body;
-         const user = req.user;
-         console.log(user);
-         if (user.Utype != 1) {
-           return res.status(400).json({ response: "Unauthorized Request!!" });
-         }
+      const user = req.user;
+      console.log(user);
+      if ((user.Utype = 1)) {
+        return res.status(400).json({ response: "Unauthorized Request" });
+      }
 
       const lastsrl = await state_masters.findAll({
         where: { State_name: State_name },
@@ -291,7 +293,7 @@ class Masterservice {
       console.error("Error in Stateadd service:", error);
 
       // Send an error response
-      if (!res.headersSent) {
+      if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
           response: "An error occurred while adding the State",
@@ -321,11 +323,11 @@ class Masterservice {
         ID_Vendor1,
       } = req.body;
 
-      const lastsrl = await customer_masters.findAll({
-        where: { CoName: CoName },
+      const lastsrl = await customer_masters.findOne({
+        where: { Mobile: Mobile },
       });
 
-      if (lastsrl.length == 0) {
+      if (lastsrl) {
         await customer_masters.create({
           CoName: CoName,
           PhNo: PhNo,
@@ -360,7 +362,7 @@ class Masterservice {
       console.error("Error in Customeradd service:", error);
 
       // Send an error response
-      if (!res.headersSent) {
+      if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
           response: "An error occurred while adding the Customer",
@@ -374,11 +376,11 @@ class Masterservice {
 
     try {
       const { type } = req.body;
-        const user = req.user;
-        console.log(user);
-        if (user.Utype != 1) {
-          return res.status(400).json({ response: "Unauthorized Request!!" });
-        }
+      const user = req.user;
+      console.log(user);
+      if ((user.Utype = 1)) {
+        return res.status(400).json({ response: "Unauthorized Request" });
+      }
 
       await FBType_Masters.create({
         type_name: type,
@@ -426,17 +428,16 @@ class Masterservice {
       });
     }
   }
-
   async CustTypeAdd(req, res, next) {
     // console.log(req.body);
 
     try {
       const { custType } = req.body;
-       const user = req.user;
-       console.log(user);
-       if (user.Utype != 1) {
-         return res.status(400).json({ response: "Unauthorized Request!!" });
-       }
+      const user = req.user;
+      console.log(user);
+      if ((user.Utype = 1)) {
+        return res.status(400).json({ response: "Unauthorized Request" });
+      }
 
       await CustomerType_Master.create({
         type: custType,
@@ -462,11 +463,11 @@ class Masterservice {
 
     try {
       const { NAME } = req.body;
-       const user = req.user;
-       console.log(user, "User fetch from req.user");
-       if (user.Utype != 1) {
-         return res.status(400).json({ response: "Unauthorized Request!!" });
-       }
+      const user = req.user;
+      console.log(user, "User fetch from req.user");
+      if ((user.Utype = 1)) {
+        return res.status(400).json({ response: "Unauthorized Request" });
+      }
       const lastsrl = await Industry_Masters.findAll({
         where: { NAME: NAME },
       });
@@ -489,7 +490,7 @@ class Masterservice {
       console.error("Error in Industry add service:", error);
 
       // Send an error response
-      if (!res.headersSent) {
+      if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
           response: "An error occurred while adding the Industry",
@@ -497,6 +498,95 @@ class Masterservice {
         });
       }
     }
+  }
+  async SalesManRegistration(req, res, next) {
+    try {
+      const {
+        CompanyCode,
+        vat_no,
+        TrgAmt,
+        LISCENCENO,
+        CONTACTPERSON,
+        PHONE,
+        ADDRESS,
+        NAME,
+        ID_Country,
+        Utype,
+        Email,
+      } = req.body;
+     
+      if (
+        !(
+          CompanyCode &&
+          vat_no &&
+          LISCENCENO &&
+          PHONE &&
+          ADDRESS &&
+          NAME &&
+          ID_Country
+        )
+      ) {
+        return res
+          .status(400)
+          .status({ errmsg: true, response: "input missing!!!" });
+      }
+      let checkUser = await UserMasters.findOne({
+        where: {
+          LoginCode: PHONE,
+        },
+      });
+
+      let checkSales = await SalesManMaster.findOne({
+        where: { PHONE: PHONE },
+      });
+      console.log(checkUser, checkSales, "GET THE RESPONSE");
+
+      if (checkUser || checkSales) {
+        return res
+          .status(401)
+          .json({ errmsg: true, response: "User Already Exists" });
+      }
+
+      let SalesCreate = SalesManMaster.create({
+        CompanyCode,
+        vat_no,
+        TrgAmt,
+        LISCENCENO,
+        CONTACTPERSON,
+        PHONE,
+        ADDRESS,
+        NAME,
+      });
+      let Password = bcrypt.hashSync("Abc@123", Pwd);
+      console.log(SalesCreate, "hello hi");
+
+      if (SalesCreate) {
+        let userCreate = UserMasters.create({
+          ID_Country,
+          Active: 1,
+          LogOut: 1,
+          Utype: 4,
+          Password,
+          Email,
+          UUid: uuidv4(),
+          Name: NAME,
+          LoginCode: PHONE,
+          CompanyCode,
+        });
+
+        console.log(userCreate, "bye bye");
+
+        if (userCreate) {
+          return res
+            .status(200)
+            .json({ response: "Sales Man Created Successfully" });
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({ errmsg: true, response: err?.message });
+    }
+    const {} = req.body;
   }
 }
 

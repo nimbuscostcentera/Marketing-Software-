@@ -96,10 +96,11 @@ router.post(
 router.post("/zone-add", utils.verifyToken, AuthController.zoneadd);
 router.post("/area-list", utils.verifyToken, AuthController.arealist);
 router.post("/salesman-list", utils.verifyToken, AuthController.salesmanlist);
+router.post("/salesman-add", utils.verifyToken, AuthController.salesmanadd);
 router.post("/city-list", utils.verifyToken, AuthController.citylist);
 // router.post("/vendor-list", AuthController.vendorlist);
 router.post("/industry-list", utils.verifyToken, AuthController.industrylist);
-router.post("/state-list",utils.verifyToken, AuthController.statelist);
+router.post("/state-list", utils.verifyToken, AuthController.statelist);
 router.post("/customer-add", AuthController.customeradd);
 router.post("/customer-list", utils.verifyToken, AuthController.customerlist);
 router.post("/zone-list", utils.verifyToken, AuthController.zonelist);
@@ -110,27 +111,27 @@ router.get("/usertype-list", utils.verifyToken, AuthController.UserListType);
 router.post("/admin", utils.verifyToken, AuthController.adminPanel);
 router.post("/industry-add", utils.verifyToken, AuthController.industryadd);
 //By tarashis
-router.route("/getmonthlist").get(utils.verifyToken,AuthController.monthlist);
+router.route("/getmonthlist").get(utils.verifyToken, AuthController.monthlist);
 router
   .route("/getbusinesslist")
-  .get(utils.verifyToken,AuthController.businessList);
+  .get(utils.verifyToken, AuthController.businessList);
 router
   .route("/year")
   .post(utils.verifyToken, AuthController.yearAdd)
-  .get(utils.verifyToken,AuthController.yearList);
+  .get(utils.verifyToken, AuthController.yearList);
 router
   .route("/customer-type")
   .post(utils.verifyToken, AuthController.custTypeAdd)
-  .get(utils.verifyToken,AuthController.custList);
+  .get(utils.verifyToken, AuthController.custList);
 router
   .route("/fbtype")
   .post(utils.verifyToken, AuthController.fbtypeadd)
-  .get(utils.verifyToken,AuthController.fbtypelist);
-router.route("/weekdays").get(utils.verifyToken,AuthController.weekdayslist);
+  .get(utils.verifyToken, AuthController.fbtypelist);
+router.route("/weekdays").get(utils.verifyToken, AuthController.weekdayslist);
 //  router.post("/token-generate",PermissonCheck.GenerateToken);
 router.post("/user-registration", AuthController.UserRegistration);
 
-router.post("/user-edit", utils.verifyToken,AuthController.UserEdit);
+router.post("/user-edit", utils.verifyToken, AuthController.UserEdit);
 
 // router.post("/forget-password", Logger.Logreq,AuthController.forgetpass,Logger.Logres);
 // router.post("/reset-password",Logger.Logreq , AuthController.resetpass,Logger.Logres);
