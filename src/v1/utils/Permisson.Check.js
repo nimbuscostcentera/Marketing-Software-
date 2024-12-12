@@ -238,7 +238,7 @@ class Permission {
       const userDetails = await UserMasters.findOne({
         where: { UUid: userId },
       })
-      if (userDetails.Utype == 2) {
+      if (userDetails.Utype != 1) {
         const countryId = userDetails.ID_Country;
         const country= await country_masters.findOne({
           where: { ID: countryId }

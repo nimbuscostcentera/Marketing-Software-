@@ -10,6 +10,7 @@ const { v4: uuidv4 } = require("uuid");
 const { CompanyMasters } = require("../Model/CompanyMaster.Model");
 const { country_masters } = require("../Model/CountryMaster.Model");
 const { User_Type_Masters } = require("../Model/UserType.Model");
+const { State_Details_Master } = require("../Model/state_detailsMaster.Model");
 // const { log } = require("console");
 const Pwd = bcrypt.genSaltSync(10);
 class LoginService {
@@ -323,8 +324,9 @@ if (user) {
           !PANNo || !Country  || !Email || !Utype || !pass) {
           return res.status(400).json({ message: "Missing required fields" });
       }
+      const state = req.body.id_state;
       const user = req.user;
-      console.log(user);
+      // console.log(user);
       if(user.Utype != 1){
         return res.status(400).json({ message: "Unauthorized Request!!" });
       }
@@ -339,7 +341,7 @@ if (user) {
           const countryExist = await country_masters.findOne({
             where: { ID: Country }
           });
-      console.log(countryExist);
+      // console.log(countryExist);
       
           if (!countryExist) {
             return res.status(400).json({ message: "This country does not exist" });
@@ -366,7 +368,7 @@ if (user) {
       const hashedPassword = await bcrypt.hash(pass, 10);
 
       // Create the user record
-      await UserMasters.create({
+     const userDetails = await UserMasters.create({
         LoginCode:ContactNumber,
         CompanyCode: CompanyCode,
         Email: Email,
@@ -378,7 +380,17 @@ if (user) {
         ZoneId:-1,
         Name:Name,
         Active:1
-      });
+     });
+            if (state.length != 0 && userDetails.Utype == 3) {
+              for (let i = 0; i < state.length; i++) {
+                await State_Details_Master.create({
+                  id_user: userDetails.ID,
+                  id_state: state[i],
+                  id_country: userDetails.ID_Country,
+                });
+              }
+            }
+           
       return res.status(201).json({ message: "Company registered successfully" });
     } else {
       return res.status(400).json({ message: "Company was not registered successfully" });

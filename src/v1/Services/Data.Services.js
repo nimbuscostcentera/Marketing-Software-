@@ -21,6 +21,7 @@ const {
 const { CustomerType_Master } = require("../Model/CustomerTypeMaster.Model");
 const { year_Master } = require("../Model/YearMaster.Model");
 const { month_Master } = require("../Model/MonthMaster.Model");
+const { State_Details_Master } = require("../Model/state_detailsMaster.Model");
 class Dataservice {
   async AreaList(req, res, next) {
     const { CompanyCode, ReportType, Date, zone_id } = req.body;
@@ -158,20 +159,44 @@ class Dataservice {
         warning: false,
         msg: "",
       };
-      if (
-        CountryCode !== undefined &&
-        CountryCode !== null &&
-        CountryCode !== ""
-      ) {
-        data_obj.id_country = parseInt(CountryCode);
+          if (
+            CountryCode !== undefined &&
+            CountryCode !== null &&
+            CountryCode !== ""
+          ) {
+            data_obj.id_country = parseInt(CountryCode);
+          } else {
+            (message_obj.warning = true),
+              (message_obj.msg = "country code is not defined");
+            // return res
+            //   .status(400)
+            //   .json({ errMsg: false, message: message_obj.msg });
+          }
+      const user = req.user;
+      // console.log(user,"User from req.user")
+      let Result;
+      if (user.Utype == 3) {
+        Result = await State_Details_Master.findAll({
+          where: {
+            id_user: user.ID,
+          },
+          include: [
+            {
+              model: state_masters,
+              as: "statedetails",
+              attributes: [],
+              where: data_obj,
+            },
+          ],
+          attributes: [
+            [sq.col("statedetails.ID"), "ID"],
+            [sq.col("statedetails.State_name"), "state"],
+          ],
+          raw: true,
+        });
+        // console.log(details,"details fetched for utype 3")
       } else {
-        (message_obj.warning = true),
-          (message_obj.msg = "country code is not defined");
-        // return res
-        //   .status(400)
-        //   .json({ errMsg: false, message: message_obj.msg });
-      }
-      await state_masters
+      Result =  await state_masters
         .findAll({
           where: data_obj,
           include: [
@@ -189,14 +214,18 @@ class Dataservice {
           ],
           // raw:true
         })
-        .then(async (Result) => {
-          if (Result.length != 0) {
-            console.log(Result);
-            return res.status(200).json({ errMsg: false, response: Result });
+      }
+
+        if (Result.length != 0) {
+            // console.log(Result);
+            return res
+              .status(200)
+              .json({ errMsg: false, response: Result });
           } else {
             return res.status(400).json({ errMsg: false, response: Result });
           }
-        });
+  
+    
 
       // const users =  AgentMasters.findAll();
     } catch (error) {
