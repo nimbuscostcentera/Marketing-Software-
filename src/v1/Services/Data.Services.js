@@ -27,7 +27,7 @@ class Dataservice {
   async AreaList(req, res, next) {
     const { CompanyCode, ReportType, Date, zone_id } = req.body;
 
-    let zoneObj = { CompanyCode: CompanyCode };
+    let zoneObj = { };
     if (
       zone_id !== undefined &&
       zone_id !== null &&
@@ -235,8 +235,9 @@ class Dataservice {
   }
   async AdminPanel(req, res, next) {
     const { CompanyCode, StartDate, EndDate, today, fbtype, Area } = req.body;
-
-    let obj = { CompanyCode: CompanyCode };
+    const user = req.user;
+    console.log(user);
+    let obj = {};
     if (
       StartDate !== "" &&
       StartDate !== undefined &&
@@ -258,6 +259,10 @@ class Dataservice {
     if (Area !== "" && Area !== undefined && Area !== null) {
       obj.Area = Area;
     }
+    if (CompanyCode !== undefined && CompanyCode !== null && CompanyCode !== "" && user?.Utype!=1) {
+      obj.CompanyCode = CompanyCode;
+    }
+   
 
     let dbconnect = sq
       .sync()
@@ -328,7 +333,7 @@ class Dataservice {
               required: true,
             },
           ],
-          where: { ...obj },
+          where: obj,
           attributes: [
             "Vounum",
             "Voudate",

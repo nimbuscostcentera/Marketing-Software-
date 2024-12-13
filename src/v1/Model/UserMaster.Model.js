@@ -18,10 +18,10 @@ const UserMasters = sq.define("usermasters", {
   CompanyCode: {
     type: DataTypes.STRING,
     allowNull: false,
-    // references: {
-    //   model: "companymasters",
-    //   key: "CompanyCode",
-    // },
+    references: {
+      model: "companymasters",
+      key: "CompanyCode",
+    },
   },
   LoginCode: {
     // as phone number unique

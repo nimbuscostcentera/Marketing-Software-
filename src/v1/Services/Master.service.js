@@ -30,10 +30,11 @@ class Masterservice {
         othentime,
         half,
         full,
+        Zone
       } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype = 1)) {
+      if ((user.Utype != 1)) {
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -54,6 +55,7 @@ class Masterservice {
           half: half,
           full: full,
           CompanyCode: CompanyCode,
+          Zone_ID:Zone
         });
         return res.status(200).json({
           errMsg: false,
@@ -319,15 +321,18 @@ class Masterservice {
         id_city,
         CompanyCode,
         REFNAME,
-        ID_Vendor,
-        ID_Vendor1,
+        id_industry,
+        id_salesman,
+        BusinessSize,
+        id_country,
       } = req.body;
 
       const lastsrl = await customer_masters.findOne({
         where: { Mobile: Mobile },
       });
+console.log(lastsrl);
 
-      if (lastsrl) {
+      if (!lastsrl?.dataValues?.ID) {
         await customer_masters.create({
           CoName: CoName,
           PhNo: PhNo,
@@ -341,8 +346,10 @@ class Masterservice {
           id_city: id_city,
           CompanyCode: CompanyCode,
           REFNAME: REFNAME,
-          ID_Vendor: ID_Vendor,
-          ID_Vendor1: ID_Vendor1,
+          ID_Salesman: id_salesman,
+          ID_Industry: id_industry,
+          Busi_size: BusinessSize,
+          ID_Country: id_country,
         });
         return res.status(200).json({
           errMsg: false,

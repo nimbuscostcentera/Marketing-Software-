@@ -15,6 +15,7 @@ const Feedback_Transactions = sq.define("feedback_transactions", {
   Vounum: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique:true
   },
   Voudate: {
     type: DataTypes.DATEONLY,
@@ -51,7 +52,19 @@ const Feedback_Transactions = sq.define("feedback_transactions", {
   ID_USER: {
     type: DataTypes.BIGINT,
     allowNull: false,
+    references: {
+      model: "usermasters",
+      key: "ID",
+    }
   },
+  CompanyCode: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: "companymasters",
+      key: "CompanyCode",
+    },
+  }
 });
 
 Feedback_Transactions.belongsTo(customer_masters, {
