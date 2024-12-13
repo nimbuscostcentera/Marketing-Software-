@@ -64,19 +64,19 @@ const customer_masters = sq.define("customer_masters", {
   },
   ID_Industry: {
     type: DataTypes.BIGINT,
-    allowNull: true,
+    allowNull: false,
   },
   ID_Salesman: {
     type: DataTypes.BIGINT,
-    allowNull: true,
+    allowNull: false,
   },
   ID_Country: {
     type: DataTypes.BIGINT,
-    allowNull: true,
+    allowNull: false,
   },
   Busi_size: {
     type: DataTypes.BIGINT,
-    allowNull: true,
+    allowNull: false,
   },
 });
 

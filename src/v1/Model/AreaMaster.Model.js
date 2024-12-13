@@ -29,14 +29,14 @@ const Area_Masters = sq.define("area_masters", {
       key:"ID"
     }
   },
-  CompanyCode: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    references: {
-      model: "companymasters",
-      key: "CompanyCode",
-    },
-  }, 
+  // CompanyCode: {
+  //   type: DataTypes.STRING,
+  //   allowNull: true,
+  //   references: {
+  //     model: "companymasters",
+  //     key: "CompanyCode",
+  //   },
+  // }, 
 });
 
 Area_Masters.belongsTo(zone_masters,
