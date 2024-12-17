@@ -87,7 +87,7 @@ class Masterservice {
       const { NAME, id_state } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype = 1)) {
+      if (user.Utype == 1) {
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -134,7 +134,7 @@ class Masterservice {
       const { Country } = req.body;
       const user = req.user;
       console.log(user, "User fetch from req.user");
-      if ((user.Utype = 1)) {
+      if (user.Utype == 1) {
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -180,7 +180,7 @@ class Masterservice {
       const { NAME, Parent_zone, id_city } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype = 1)) {
+      if ((user.Utype == 1)) {
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -264,7 +264,7 @@ class Masterservice {
       const { State_name, id_country } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype = 1)) {
+      if ((user.Utype == 1)) {
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -385,7 +385,7 @@ console.log(lastsrl);
       const { type } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype = 1)) {
+      if ((user.Utype == 1)) {
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -442,7 +442,7 @@ console.log(lastsrl);
       const { custType } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype = 1)) {
+      if ((user.Utype == 1)) {
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -472,7 +472,7 @@ console.log(lastsrl);
       const { NAME } = req.body;
       const user = req.user;
       console.log(user, "User fetch from req.user");
-      if ((user.Utype = 1)) {
+      if ((user.Utype == 1)) {
         return res.status(400).json({ response: "Unauthorized Request" });
       }
       const lastsrl = await Industry_Masters.findAll({
