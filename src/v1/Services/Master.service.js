@@ -87,7 +87,9 @@ class Masterservice {
       const { NAME, id_state } = req.body;
       const user = req.user;
       console.log(user);
-      if (user.Utype == 1) {
+
+      if ((user.Utype != 1)) {
+
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -134,7 +136,9 @@ class Masterservice {
       const { Country } = req.body;
       const user = req.user;
       console.log(user, "User fetch from req.user");
-      if (user.Utype == 1) {
+
+      if ((user.Utype != 1)) {
+
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -148,12 +152,12 @@ class Masterservice {
         });
         return res.status(200).json({
           errMsg: false,
-          response: "City Add successful",
+          response: "Country Add successful",
         });
       } else {
         return res.status(500).json({
           errMsg: true,
-          message: "City Already Exists",
+          message: "Country Already Exists",
         });
       }
 
@@ -167,7 +171,7 @@ class Masterservice {
       if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
-          response: "An error occurred while adding the City",
+          response: "An error occurred while adding the Country",
           error: error.message,
         });
       }
@@ -180,7 +184,9 @@ class Masterservice {
       const { NAME, Parent_zone, id_city } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype == 1)) {
+
+      if ((user.Utype != 1)) {
+
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -196,12 +202,12 @@ class Masterservice {
         });
         return res.status(200).json({
           errMsg: false,
-          response: "City Add successful",
+          response: "Zone Added successful",
         });
       } else {
         return res.status(500).json({
           errMsg: true,
-          message: "City Already Exists",
+          message: "Zone Already Exists",
         });
       }
 
@@ -209,54 +215,19 @@ class Masterservice {
 
       // Send a successful response
     } catch (error) {
-      console.error("Error in Cityadd service:", error);
+      console.error("Error in Zoneadd service:", error);
 
       // Send an error response
       if (res.headersSent) {
         return res.status(500).json({
           errMsg: true,
-          response: "An error occurred while adding the City",
+          response: "An error occurred while adding the Zone",
           error: error.message,
         });
       }
     }
   }
-  async Vendoradd(req, res, next) {
-    console.log(req.body);
 
-    try {
-      const { NAME } = req.body;
-      const lastsrl = await Vendor_Masters.findAll({
-        where: { NAME: NAME },
-      });
-      console.log(lastsrl);
-      if (lastsrl.length == 0) {
-        await Vendor_Masters.create({
-          NAME: NAME,
-        });
-        return res.status(200).json({
-          errMsg: false,
-          response: "Vendor Add successful",
-        });
-      } else {
-        return res.status(500).json({
-          errMsg: true,
-          message: "Vendor Already Exists",
-        });
-      } // Send a successful response
-    } catch (error) {
-      console.error("Error in Vendoradd service:", error);
-
-      // Send an error response
-      if (res.headersSent) {
-        return res.status(500).json({
-          errMsg: true,
-          response: "An error occurred while adding the Vendor",
-          error: error.message,
-        });
-      }
-    }
-  }
   async Stateadd(req, res, next) {
     console.log(req.body);
 
@@ -264,7 +235,9 @@ class Masterservice {
       const { State_name, id_country } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype == 1)) {
+
+      if ((user.Utype != 1)) {
+
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -279,7 +252,7 @@ class Masterservice {
         });
         return res.status(200).json({
           errMsg: false,
-          response: "State Add successful",
+          response: "State Added successful",
         });
       } else {
         return res.status(500).json({
@@ -292,7 +265,7 @@ class Masterservice {
 
       // Send a successful response
     } catch (error) {
-      console.error("Error in Stateadd service:", error);
+      console.error("Error in State add service:", error);
 
       // Send an error response
       if (res.headersSent) {
@@ -353,7 +326,7 @@ console.log(lastsrl);
         });
         return res.status(200).json({
           errMsg: false,
-          response: "Customer Add successful",
+          response: "Customer Added successful",
         });
       } else {
         return res.status(400).json({
@@ -366,7 +339,7 @@ console.log(lastsrl);
 
       // Send a successful response
     } catch (error) {
-      console.error("Error in Customeradd service:", error);
+      console.error("Error in Customer add service:", error);
 
       // Send an error response
       if (res.headersSent) {
@@ -385,7 +358,9 @@ console.log(lastsrl);
       const { type } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype == 1)) {
+
+      if ((user.Utype != 1)) {
+
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -394,14 +369,14 @@ console.log(lastsrl);
       });
       return res.status(200).json({
         errMsg: false,
-        response: "feedback Add successful",
+        response: "feedback Added successful",
       });
 
       // Process EstimateDetails
 
       // Send a successful response
     } catch (error) {
-      console.error("Error in Cityadd service:", error);
+      console.error("Error in City add service:", error);
       return res.status(500).json({
         errMsg: true,
         message: "feedback Already Exists",
@@ -442,7 +417,9 @@ console.log(lastsrl);
       const { custType } = req.body;
       const user = req.user;
       console.log(user);
-      if ((user.Utype == 1)) {
+
+      if ((user.Utype != 1)) {
+
         return res.status(400).json({ response: "Unauthorized Request" });
       }
 
@@ -472,7 +449,9 @@ console.log(lastsrl);
       const { NAME } = req.body;
       const user = req.user;
       console.log(user, "User fetch from req.user");
-      if ((user.Utype == 1)) {
+
+      if ((user.Utype != 1)) {
+
         return res.status(400).json({ response: "Unauthorized Request" });
       }
       const lastsrl = await Industry_Masters.findAll({
@@ -485,7 +464,7 @@ console.log(lastsrl);
         });
         return res.status(200).json({
           errMsg: false,
-          response: "Industry Add successful",
+          response: "Industry Added successful",
         });
       } else {
         return res.status(500).json({
